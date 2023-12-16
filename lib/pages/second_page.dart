@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kurs_2_riverpod/states/counter_state.dart';
-import 'package:kurs_2_riverpod/states/is_changed_state.dart';
+
+import 'package:kurs_2_riverpod/states/new_counter_notifier.dart';
+
 import 'package:kurs_2_riverpod/widgets/custom_text.dart';
 
-class SecondPage extends ConsumerWidget {
+class SecondPage extends StatelessWidget {
   const SecondPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -26,19 +27,26 @@ class SecondPage extends ConsumerWidget {
             const Text(
               'You have pushed the button this many times:',
             ),
-            CustomText(
-              number: ref.watch(counterState).toString(),
+            Consumer(
+              builder: (context, ref, child) {
+                return CustomText(
+                  number: ref.watch(newCounterNotifierProvider).toString(),
+                );
+              },
             ),
-            CustomText(isChanged: ref.watch(isChangedState)),
             const SizedBox(
               height: 30,
             ),
-            TextButton(
-              onPressed: () {
-                ref.read(counterState.notifier).state++;
+            Consumer(
+              builder: (context, ref, child) {
+                return TextButton(
+                  onPressed: () {
+                    ref.read(newCounterNotifierProvider.notifier).azayt();
+                  },
+                  child: const Text('Increment counter'),
+                );
               },
-              child: const Text('Increment counter'),
-            )
+            ),
           ],
         ),
       ),

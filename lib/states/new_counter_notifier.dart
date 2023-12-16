@@ -1,3 +1,4 @@
+/// Riverpod 2.0
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'new_counter_notifier.g.dart';

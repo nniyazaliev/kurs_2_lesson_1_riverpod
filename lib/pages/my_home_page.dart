@@ -4,6 +4,7 @@ import 'package:kurs_2_riverpod/pages/second_page.dart';
 import 'package:kurs_2_riverpod/states/counter_notifier.dart';
 import 'package:kurs_2_riverpod/states/counter_state.dart';
 import 'package:kurs_2_riverpod/states/is_changed_state.dart';
+import 'package:kurs_2_riverpod/states/new_counter_notifier.dart';
 import 'package:kurs_2_riverpod/widgets/custom_text.dart';
 
 // ignore: must_be_immutable
@@ -21,7 +22,7 @@ class MyHomePage extends ConsumerWidget {
 
     final counter = ref.watch(counterProvider);
 
-    // ignore: unnecessary_brace_in_string_interps
+    final newCounter = ref.watch(newCounterNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,18 +33,22 @@ class MyHomePage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CustomText(
-              number: ref.watch(counterState).toString(),
-            ),
-            CustomText(number: counter.toString()),
+            CustomText(number: 'CounterState: ${ref.watch(counterState)}'),
+            // ignore: unnecessary_brace_in_string_interps
+            CustomText(number: 'CounterProvider: ${counter}'),
+            CustomText(number: 'NewCounter: $newCounter'),
             CustomText(isChanged: isChanged),
+
             TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const SecondPage();
-                  },
-                ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const SecondPage();
+                    },
+                  ),
+                );
               },
               child: const Text('Second page'),
             )
@@ -53,8 +58,12 @@ class MyHomePage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.read(counterState.notifier).state++;
-          ref.read(counterProvider.notifier).koboyt();
+          //ref.read(counterState.notifier).update((state) => state + 1);
+
           ref.read(isChangedState.notifier).state = !isChanged;
+
+          ref.read(counterProvider.notifier).koboyt();
+          ref.read(newCounterNotifierProvider.notifier).koboyt();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
